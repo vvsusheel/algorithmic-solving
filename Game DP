@@ -1,0 +1,35 @@
+int Solution::maxcoin(vector<int> &A) {
+    //game strategy 
+    //https://www.geeksforgeeks.org/optimal-strategy-for-a-game-dp-31
+    // below one is easy, both are completely different.
+    //https://www.geeksforgeeks.org/coin-game-of-two-corners-greedy-approach/
+      int n = A.size();
+        int mat[n][n];//mat[i][j]stores the answer for [i,j] vector 
+        for(int i=0;i<n;i++){ // only single number case , you just take it
+            mat[i][i]=A[i];
+        }
+        int i=0;
+        int j=1;
+        while(i<n && j<n){ //2 numbers  case you just take the maximum
+            mat[i][j] = max(A[i],A[j]);
+            i++;j++;
+        }
+        i=0;j=2;
+        // maximun of two options  
+        //1. take A[j] then as the other player is also clever you get the min 
+        //  of the possible values after his pick.
+        //2. similarly take A[i]
+        while(i<n && j<n){
+            // topological sort of the dag of sub problems [i,j] 
+            // need to fill them diagonally
+            int r = i;
+            int c = j;
+            while(i<n && j<n){
+                mat[i][j] = max(A[j]+min(mat[i+1][j-1],mat[i][j-2]),A[i]+min(mat[i+2][j],mat[i+1][j-1]));
+                i++;j++;
+            }
+            i = 0;
+            j = c + 1;
+        }
+        return mat[0][n-1];
+}
