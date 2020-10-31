@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n,C;    //Capacity 
+        cin>>n>>C;
+        int wt[n],v[n];
+        for(int i=0;i<n;i++) cin>>v[i]; //Values/ Profit to be maximized
+        for(int i=0;i<n;i++) cin>>wt[i]; //Weight 
+        vector<vector<int> > dp(n+1,vector<int>(C+1,0));
+        // i iterates over all indexes from 0 to n
+        // j iterates over capacity from 0 to C
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=C;j++)
+            {
+                if(i==0 || j==0) dp[i][j]=0;
+                else if(wt[i-1]<=j) //Pick or not pick that is name KNAPSACK
+                    dp[i][j]=max(dp[i-1][j],v[i-1]+ dp[i-1][j-wt[i-1]]);  
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        }
+        cout<<dp[n][C]<<endl;
+    }
+    return 0;
+}
