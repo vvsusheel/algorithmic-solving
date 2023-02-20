@@ -1,2 +1,2 @@
 # algorithmic-solving 
-Collection of some good questions
+Collection of some nuances in problem solving
